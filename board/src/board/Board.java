@@ -36,6 +36,8 @@ public class Board {
 		board = new HashMap<>();
 		userManager = new UserManager();
 		postManager = new PostManager();
+		Admin admin = new Admin("admin", "1234");
+		userManager.createAdmin(admin);
 		log = -1;
 	}
 	
