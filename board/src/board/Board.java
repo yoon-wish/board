@@ -33,7 +33,10 @@ public class Board {
 	}
 	
 	private void setBoard() {
-
+		board = new HashMap<>();
+		userManager = new UserManager();
+		postManager = new PostManager();
+		log = -1;
 	}
 	
 	
