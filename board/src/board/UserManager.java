@@ -12,6 +12,10 @@ public class UserManager {
 		User user = new User(id, pw);
 		group.add(user);
 	}
+	
+	public void createAdmin(Admin admin) {
+		group.add(admin);
+	}
 
 	// R
 	public User readUser(int index) {
