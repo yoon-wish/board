@@ -32,5 +32,15 @@ public class UserManager {
 		}
 		return false;
 	}
+	
+	public int findIndexById(String id) {
+		int index = -1;
+		for(int i=0; i<group.size(); i++ ) {
+			User user = group.get(i);
+			if(user.getId().equals(id))
+				index = i;
+		}
+		return index;
+	}
 
 }
