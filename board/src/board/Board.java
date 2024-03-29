@@ -73,8 +73,8 @@ public class Board {
 //			leave();
 		else if (sel == LOGIN && isLogin(CHECK_LOGOUT))
 			login();
-//		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
-//			logout();
+		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
+			logout();
 //		else if (sel == WRITE && isLogin(CHECK_LOGIN))
 //			write();
 //		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
@@ -118,6 +118,11 @@ public class Board {
 			log = index;
 			System.out.println("로그인 성공");
 		}
+	}
+	
+	private void logout() {
+		log = -1;
+		System.out.println("로그아웃 완료");
 	}
 	
 	private int printSearchSubMenu(){
