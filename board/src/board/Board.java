@@ -1,6 +1,133 @@
 package board;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 public class Board {
+	private Scanner sc = new Scanner(System.in);
+	
+	private final int JOIN = 1;
+	private final int LEAVE = 2;
+	private final int LOGIN = 3;
+	private final int LOGOUT = 4;
+	private final int WRITE = 5;
+	private final int SEARCH = 6;
+	private final int MYPAGE = 7;
+	private final int MANAGER = 8;
+	
+	private final int CHECK_LOGIN = 1;
+	private final int CHECK_LOGOUT = 2;
+
+	private final int NOTICE = 1;
+	private final int ALLPOST = 2;
+	
+	private int log;
+	private Map<User, ArrayList<Post>> board;
+	private UserManager userManager;
+	private PostManager postManager;
+	
+	public Board() {
+		setBoard();
+	}
+	
+	private void setBoard() {
+
+	}
+	
+	
+	private int printMenu() {
+		System.out.println("==== Board ====");
+		System.out.println("[1] 회원가입");
+		System.out.println("[2] 회원탈퇴");
+		System.out.println("[3] 로 그 인");
+		System.out.println("[4] 로그아웃");
+		System.out.println("[5] 작성하기");
+		System.out.println("[6] 조회하기"); 
+		System.out.println("[7] 마이페이지");
+		System.out.println("[8] 관리자");
+
+		return inputNumber("Menu");
+	}
+	
+	private int inputNumber(String message) {
+		System.out.print(message + " : ");
+		int number = -1;
+		try {
+			String input = sc.next();
+			number = Integer.parseInt(input);
+		} catch (Exception e) {
+			System.err.println("숫자를 입력하세요.");
+		}
+		return number;
+	}
+
+	private void runMenu(int sel) {
+		if (sel == JOIN && isLogin(CHECK_LOGOUT))
+			join();
+		else if (sel == LEAVE && isLogin(CHECK_LOGIN))
+			leave();
+		else if (sel == LOGIN && isLogin(CHECK_LOGOUT))
+			login();
+		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
+			logout();
+		else if (sel == WRITE && isLogin(CHECK_LOGIN))
+			write();
+		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
+			runSearch(printSearchSubMenu());
+		else if (sel == MYPAGE && isLogin(CHECK_LOGIN) && log != 0)
+			myPage();	
+		else if (sel == MANAGER && log == 0) 
+			manager();
+
+	}
+	
+	private int printSearchSubMenu(){
+		System.out.println("1) 공지사항");
+		System.out.println("2) 전 체 글");
+		return inputNumber("Menu");
+	}
+	
+	private void runSearch(int sel) {
+		if(sel == NOTICE)
+			searchNotice();
+		else if(sel == ALLPOST)
+			searchAllPost();
+	}
+	
+	private void temp() {
+		
+	}
+	
+	private boolean isLogin(int check) {
+		if (check == CHECK_LOGOUT && log != -1) {
+			System.err.println("로그아웃 후 이용가능");
+			return false;
+		}
+
+		if (check == CHECK_LOGIN && log == -1) {
+			System.err.println("로그인 후 이용가능");
+			return false;
+		}
+
+		return true;
+	}
+	
+	private String inputString(String message) {
+		System.out.print(message + " : ");
+		return sc.next();
+	}
+
+	private String inputStringLine(String message) {
+		System.out.print(message + " : ");
+		return sc.nextLine();
+	}
+
+	private String inputStringLine() {
+		return sc.nextLine();
+	}
+	
 	public void run() {
 		while (true) {
 		}
