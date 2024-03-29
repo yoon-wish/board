@@ -28,8 +28,15 @@ public class UserManager {
 	}
 
 	// D
-	public void deleteUser(int index) {
-		group.remove(index);
+	public int deleteUser(int log, String pw) {
+		User user = readUser(log);
+		if(user.getPw().equals(pw)) {
+			group.remove(log);
+			System.out.println("탈퇴완료");
+			return log;
+		}
+		System.err.println("비밀번호를 틀렸습니다.");
+		return -1;
 	}
 
 	public boolean checkDuplId(String id) {
@@ -59,5 +66,7 @@ public class UserManager {
 		}
 		return index;
 	}
+	
+	
 	
 }
