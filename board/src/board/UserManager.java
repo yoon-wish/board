@@ -31,13 +31,21 @@ public class UserManager {
 	public boolean checkDuplId(String id) {
 		for (int i = 0; i < group.size(); i++) {
 			if (group.get(i).getId().equals(id)) {
-				System.err.println("이미 존재하는 아이디입니다.");
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	public boolean checkDuplIdAndPw(String id, String pw) {
+		int index = findIndexById(id);
+		if(!group.get(index).getPw().equals(pw)) {
+			System.err.println("회원 정보를 다시 확인하세요.");
+			return false;
+		}
+		return true;
+	}
+
 	public int findIndexById(String id) {
 		int index = -1;
 		for(int i=0; i<group.size(); i++ ) {
@@ -47,5 +55,5 @@ public class UserManager {
 		}
 		return index;
 	}
-
+	
 }
