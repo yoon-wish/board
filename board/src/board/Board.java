@@ -86,6 +86,23 @@ public class Board {
 
 	}
 	
+	private void join() {
+		String id = inputString("id");
+		if(userManager.checkDuplId(id)) {
+			return;
+		}
+		
+		// 유저 추가
+		String pw = inputString("pw");
+		userManager.creatUser(id, pw);
+		
+		// 추가한 유저를 board에 put
+		User user = userManager.readUserById(id);
+		board.put(user, null);
+		
+		System.out.printf("[%d]님 환영합니다.\n", id);
+	}
+	
 	private int printSearchSubMenu(){
 		System.out.println("1) 공지사항");
 		System.out.println("2) 전 체 글");
