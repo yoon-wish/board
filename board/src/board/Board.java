@@ -69,26 +69,27 @@ public class Board {
 	private void runMenu(int sel) {
 		if (sel == JOIN && isLogin(CHECK_LOGOUT))
 			join();
-		else if (sel == LEAVE && isLogin(CHECK_LOGIN))
-			leave();
+//		else if (sel == LEAVE && isLogin(CHECK_LOGIN))
+//			leave();
 		else if (sel == LOGIN && isLogin(CHECK_LOGOUT))
 			login();
-		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
-			logout();
-		else if (sel == WRITE && isLogin(CHECK_LOGIN))
-			write();
-		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
-			runSearch(printSearchSubMenu());
-		else if (sel == MYPAGE && isLogin(CHECK_LOGIN) && log != 0)
-			myPage();	
-		else if (sel == MANAGER && log == 0) 
-			manager();
+//		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
+//			logout();
+//		else if (sel == WRITE && isLogin(CHECK_LOGIN))
+//			write();
+//		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
+//			runSearch(printSearchSubMenu());
+//		else if (sel == MYPAGE && isLogin(CHECK_LOGIN) && log != 0)
+//			myPage();	
+//		else if (sel == MANAGER && log == 0) 
+//			manager();
 
 	}
 	
 	private void join() {
 		String id = inputString("id");
 		if(userManager.checkDuplId(id)) {
+			System.err.println("이미 존재하는 아이디입니다.");
 			return;
 		}
 		
@@ -100,7 +101,23 @@ public class Board {
 		User user = userManager.readUserById(id);
 		board.put(user, null);
 		
-		System.out.printf("[%d]님 환영합니다.\n", id);
+		System.out.printf("[%s]님 환영합니다.\n", id);
+	}
+	
+	private void login() {
+		String id = inputString("id");
+		String pw = inputString("pw");
+
+		int index = userManager.findIndexById(id);
+		if (index == -1) {
+			System.err.println("존재하지 않는 계정입니다.");
+			return;
+		}
+
+		if(userManager.checkDuplIdAndPw(id, pw)) {
+			log = index;
+			System.out.println("로그인 성공");
+		}
 	}
 	
 	private int printSearchSubMenu(){
@@ -150,6 +167,7 @@ public class Board {
 	
 	public void run() {
 		while (true) {
+			runMenu(printMenu());
 		}
 	}
 }
