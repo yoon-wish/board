@@ -17,6 +17,11 @@ public class UserManager {
 	public User readUser(int index) {
 		return group.get(index);
 	}
+	
+	public User readUserById(String id) {
+		int index = findIndexById(id);
+		return group.get(index);
+	}
 
 	// D
 	public void deleteUser(int index) {
