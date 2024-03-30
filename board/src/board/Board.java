@@ -32,6 +32,7 @@ public class Board {
 	private Map<User, ArrayList<Post>> board;
 	private UserManager userManager;
 	private PostManager postManager;
+	private FileManager fileManager;
 
 	public Board() {
 		setBoard();
@@ -41,6 +42,7 @@ public class Board {
 		board = new HashMap<>();
 		userManager = new UserManager();
 		postManager = new PostManager();
+		fileManager = new FileManager();
 		Admin admin = new Admin("admin", "1234");
 		userManager.createAdmin(admin);
 		board.put(admin, null);
@@ -111,6 +113,8 @@ public class Board {
 		User user = userManager.readUser(userIndex);
 		board.get(user).remove(deleteIndex);
 		System.out.println("삭제완료");
+
+		fileManager.save(saveInfo());
 	}
 
 	private int findUserIndexById(String id) {
@@ -139,13 +143,13 @@ public class Board {
 			int sel = inputNumber("1)수정\n2)삭제\n");
 			if (sel == MODIFY) {
 				postManager.updatePost(index);
-				System.out.println("수정완료");
 			} else if (sel == DELETE) {
-				postManager.deletePost(index);
-				board.get(user).remove(index);
-				System.out.println("삭제완료");
+				if(postManager.deletePost(index))
+					board.get(user).remove(index);
 			}
 		}
+
+		fileManager.save(saveInfo());
 
 	}
 
@@ -165,6 +169,8 @@ public class Board {
 		board.put(user, null);
 
 		System.out.printf("[%s]님 환영합니다.\n", id);
+
+		fileManager.save(saveInfo());
 	}
 
 	private void leave() {
@@ -181,6 +187,8 @@ public class Board {
 			board.remove(user);
 			log = -1;
 		}
+
+		fileManager.save(saveInfo());
 	}
 
 	private void login() {
@@ -229,6 +237,7 @@ public class Board {
 		userPosts.add(post);
 		board.put(user, userPosts);
 
+		fileManager.save(saveInfo());
 	}
 
 	private int printSearchSubMenu() {
@@ -282,7 +291,84 @@ public class Board {
 		return sc.next();
 	}
 
+	private String saveInfo() {
+		String info = "";
+		for (int i = 1; i < board.size(); i++) {
+			User user = userManager.readUser(i);
+			info += user.getId() + "/" + user.getPw();
+
+			if (i < board.size() - 1) {
+				info += "/";
+			}
+		}
+
+		for (int i = 0; i < board.size(); i++) {
+			User user = userManager.readUser(i);
+			if (i == 1) {
+				info += "\n";
+			}
+			if (board.get(user) == null) {
+				continue;
+			}
+			for (int j = 0; j < board.get(user).size(); j++) {
+				Post post = board.get(user).get(j);
+				info += post.getId() + "/" + post.getTitle() + "/" + post.getContent() + "/" + post.getCode();
+
+				if (j < board.get(user).size() - 1)
+					info += "/";
+			}
+			if (i < board.size() - 1)
+				info += "\n";
+		}
+
+		return info;
+	}
+
+	private void init() {
+		String text = fileManager.load();
+
+		if (text != null && text != "") {
+			String[] temp = text.split("\n");
+			String[] userInfo = temp[0].split("/");
+			for (int i = 0; i < userInfo.length; i += 2) {
+				userManager.creatUser(userInfo[i], userInfo[i + 1]);
+
+				User user = userManager.readUserById(userInfo[i]);
+				board.put(user, null);
+			}
+
+			Post post = null;
+
+			for (int i = 1; i < temp.length; i++) {
+				String[] postInfo = temp[i].split("/");
+				for (int j = 0; j < postInfo.length; j += 4) {
+					if (postInfo[j].equals("admin")) {
+						post = postManager.createNoticePost(postInfo[j + 1], postInfo[j + 2]);
+					} else
+						post = postManager.creatPost(postInfo[j], postInfo[j + 1], postInfo[j + 2], postInfo[j + 3]);
+
+					int index = -1;
+					if (postInfo[j].equals("null"))
+						index = 0;
+					else
+						index = userManager.findIndexById(postInfo[j]);
+					
+					User user = userManager.readUser(index);
+					ArrayList<Post> userPosts = board.get(user);
+					if (userPosts == null) {
+						userPosts = new ArrayList<>();
+					}
+
+					userPosts.add(post);
+					board.put(user, userPosts);
+				}
+			}
+		}
+	}
+
+
 	public void run() {
+		init();
 		while (true) {
 			runMenu(printMenu());
 		}
