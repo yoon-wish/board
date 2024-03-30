@@ -284,8 +284,6 @@ public class Board {
 
 	public void run() {
 		while (true) {
-			System.out.println(board);
-			System.out.println(userManager.group);
 			runMenu(printMenu());
 		}
 	}
