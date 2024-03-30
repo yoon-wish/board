@@ -1,8 +1,8 @@
 package board;
 
 public class User {
-	String id;
-	String pw;
+	private String id;
+	private String pw;
 
 	public User(String id, String pw) {
 		this.id = id;
