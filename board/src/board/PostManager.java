@@ -25,6 +25,14 @@ public class PostManager {
 		return posts.get(index);
 	}
 	
+	public void printAllPost() {
+		Post post = null;
+		for(int i=0; i<posts.size(); i++) {
+			post = posts.get(i);
+			System.out.println(post);
+		}
+	}
+	
 	// U
 	public void updatePostTitle(int index, String newTitle) {
 		
