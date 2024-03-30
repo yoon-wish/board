@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class Board {
 	private Scanner sc = new Scanner(System.in);
 
+	private final int PAGE_SIZE = 3;
+	
 	private final int JOIN = 1;
 	private final int LEAVE = 2;
 	private final int LOGIN = 3;
@@ -179,16 +181,20 @@ public class Board {
 	private void runSearch(int sel) {
 		if (sel == NOTICE)
 			searchNotice();
-		else if (sel == ALLPOST)
-			searchAllPost();
+//		else if (sel == ALLPOST)
+//			searchAllPost();
 	}
 	
 	private void searchNotice() {
+		User user = userManager.readUser(0);
+		ArrayList<Post> userPosts = board.get(user);
+		if(userPosts == null) {
+			System.err.println("공지사항이 없습니다.");
+			return;
+		}
 		
-	}
-
-	private void temp() {
-
+		int totalPosts = board.get(user).size();
+		postManager.lookNoticeTitle(PAGE_SIZE, totalPosts, userPosts);
 	}
 
 	private boolean isLogin(int check) {
