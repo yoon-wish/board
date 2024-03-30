@@ -15,6 +15,10 @@ public class PostManager {
 		posts.add(post);
 	}
 	
+	public void createNoticePost(String title, String content) {
+		Post post = new Post(title, content);
+		posts.add(post);
+	}
 	
 	// R
 	public Post readPost(int index) {
