@@ -33,11 +33,11 @@ public class Post {
 		return this.title;
 	}
 	
-	public void setTitle() {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 	
-	public void setContent() {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
