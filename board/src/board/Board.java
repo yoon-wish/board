@@ -9,7 +9,7 @@ public class Board {
 	private Scanner sc = new Scanner(System.in);
 
 	private final int PAGE_SIZE = 3;
-	
+
 	private final int JOIN = 1;
 	private final int LEAVE = 2;
 	private final int LOGIN = 3;
@@ -29,7 +29,7 @@ public class Board {
 	private Map<User, ArrayList<Post>> board;
 	private UserManager userManager;
 	private PostManager postManager;
-	
+
 	public Board() {
 		setBoard();
 	}
@@ -83,10 +83,43 @@ public class Board {
 			write();
 		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
 			runSearch(printSearchSubMenu());
-//		else if (sel == MYPAGE && isLogin(CHECK_LOGIN) && log != 0)
-//			myPage();	
-//		else if (sel == MANAGER && log == 0) 
-//			manager();
+		else if (sel == MYPAGE && isLogin(CHECK_LOGIN))
+			myPage();
+		else if (sel == MANAGER && log == 0) 
+			manager();
+
+	}
+
+	private void manager() {
+		
+	}
+	
+	private void myPage() {
+		if (log == 0) {
+			System.err.println("관리자 페이지를 이용해주세요.");
+			return;
+		}
+
+		User user = userManager.readUser(log);
+		ArrayList<Post> userPosts = board.get(user);
+		if (userPosts == null) {
+			System.err.println("작성한 글이 없습니다.");
+			return;
+		}
+		int totalPosts = board.get(user).size();
+		int pageNumber = postManager.lookPostsTitle(PAGE_SIZE, totalPosts, userPosts);
+		int index = postManager.findIndex(user.getId(), pageNumber);
+		if (index != -1) {
+			int sel = inputNumber("1)수정\n2)삭제\n");
+			if (sel == 1) {
+				postManager.updatePost(index);
+				System.out.println("수정완료");
+			} else if (sel == 2) {
+				postManager.deletePost(index);
+				board.get(user).remove(index);
+				System.out.println("삭제완료");
+			}
+		}
 
 	}
 
@@ -152,7 +185,7 @@ public class Board {
 			return;
 		}
 		String content = postManager.writeContent();
-		
+
 		Post post = null;
 		if (log != 0) {
 			String code = postManager.writeCode();
@@ -161,12 +194,12 @@ public class Board {
 		} else {
 			post = postManager.createNoticePost(title, content);
 		}
-		
+
 		ArrayList<Post> userPosts = board.get(user);
-		if(userPosts == null) {
+		if (userPosts == null) {
 			userPosts = new ArrayList<>();
 		}
-		
+
 		userPosts.add(post);
 		board.put(user, userPosts);
 
@@ -184,22 +217,22 @@ public class Board {
 		else if (sel == ALLPOST)
 			searchAllPost();
 	}
-	
+
 	private void searchAllPost() {
 		ArrayList<Post> posts = postManager.getPosts();
 		int totalPosts = posts.size();
-		
+
 		postManager.lookPostsTitle(PAGE_SIZE, totalPosts, posts);
 	}
-	
+
 	private void searchNotice() {
 		User user = userManager.readUser(0);
 		ArrayList<Post> userPosts = board.get(user);
-		if(userPosts == null) {
+		if (userPosts == null) {
 			System.err.println("공지사항이 없습니다.");
 			return;
 		}
-		
+
 		int totalPosts = board.get(user).size();
 		postManager.lookPostsTitle(PAGE_SIZE, totalPosts, userPosts);
 	}
