@@ -80,7 +80,36 @@ public class PostManager {
 	}
 	// D
 	public void deletePost(int index) {
+		Post post = posts.get(index);
+		
+		String code = inputCode();
+		if(!post.getCode().equals(code)) {
+			System.err.println("틀렸습니다. 삭제불가.");
+			return;
+		}
 		posts.remove(index);
+	}
+	
+	public int deletePostByManager(int index) {
+		String id = posts.get(index).getId();
+		int count = 0;
+		int number = 0;
+		for(int i=0; i<posts.size(); i++) {
+			if(posts.get(i).getId().equals(id)) {
+				count ++;
+			}
+			
+			if(count == index) {
+				number = i;
+			}
+		}
+		posts.remove(index);
+		return number;
+	}
+	
+	public String findUserIdByPageNumber(int pageNumber) {
+		System.out.println("pageNumber :  " + pageNumber);
+		return posts.get(pageNumber).getId();
 	}
 
 	public String writeTitle() {		
