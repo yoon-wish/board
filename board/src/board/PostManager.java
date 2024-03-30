@@ -50,7 +50,6 @@ public class PostManager {
 	}
 	
 	public String writeTitle() {
-		sc.nextLine();	// 버퍼 비우기
 		System.out.println("<Title>");
 		String title = inputStringLine();
 		
@@ -65,6 +64,7 @@ public class PostManager {
 		sc.nextLine();	// 버퍼 비우기
 		
 		String content = "";
+		System.out.println("<Content>");
 		while(true) {
 			String temp = inputStringLine();
 			if(temp.equals(".")) {
