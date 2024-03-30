@@ -25,6 +25,9 @@ public class Board {
 	private final int NOTICE = 1;
 	private final int ALLPOST = 2;
 
+	private final int MODIFY = 1;
+	private final int DELETE = 2;
+
 	private int log;
 	private Map<User, ArrayList<Post>> board;
 	private UserManager userManager;
@@ -85,21 +88,44 @@ public class Board {
 			runSearch(printSearchSubMenu());
 		else if (sel == MYPAGE && isLogin(CHECK_LOGIN))
 			myPage();
-		else if (sel == MANAGER && log == 0) 
-			manager();
+		else if (sel == MANAGER && log == 0)
+			manager(printManageMenu());
 
 	}
 
-	private void manager() {
-		
+	private int printManageMenu() {
+		System.out.println("1) 삭제");
+		return inputNumber("menu");
 	}
-	
-	private void myPage() {
-		if (log == 0) {
-			System.err.println("관리자 페이지를 이용해주세요.");
-			return;
+
+	private void manager(int sel) {
+		ArrayList<Post> posts = postManager.getPosts();
+		int totalPosts = posts.size();
+
+		int index = postManager.lookPostsTitle(PAGE_SIZE, totalPosts, posts);
+		String id = postManager.findUserIdByPageNumber(index);
+
+		int userIndex = findUserIndexById(id);
+
+		int deleteIndex = postManager.deletePostByManager(index);
+		User user = userManager.readUser(userIndex);
+		board.get(user).remove(deleteIndex);
+		System.out.println("삭제완료");
+	}
+
+	private int findUserIndexById(String id) {
+		int userIndex = 0;
+
+		for (int i = 0; i < board.size(); i++) {
+			User user = userManager.readUser(i);
+			if (user.getId().equals(id))
+				userIndex = i;
 		}
 
+		return userIndex;
+	}
+
+	private void myPage() {
 		User user = userManager.readUser(log);
 		ArrayList<Post> userPosts = board.get(user);
 		if (userPosts == null) {
@@ -111,10 +137,10 @@ public class Board {
 		int index = postManager.findIndex(user.getId(), pageNumber);
 		if (index != -1) {
 			int sel = inputNumber("1)수정\n2)삭제\n");
-			if (sel == 1) {
+			if (sel == MODIFY) {
 				postManager.updatePost(index);
 				System.out.println("수정완료");
-			} else if (sel == 2) {
+			} else if (sel == DELETE) {
 				postManager.deletePost(index);
 				board.get(user).remove(index);
 				System.out.println("삭제완료");
