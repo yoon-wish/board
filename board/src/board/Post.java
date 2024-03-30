@@ -32,6 +32,14 @@ public class Post {
 	public String getTitle() {
 		return this.title;
 	}
+	
+	public void setTitle() {
+		this.title = title;
+	}
+	
+	public void setContent() {
+		this.content = content;
+	}
 
 	@Override
 	public String toString() {
