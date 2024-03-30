@@ -25,14 +25,17 @@ public class Post {
 		return this.code;
 	}
 	
+	public String getTitle() {
+		return this.title;
+	}
 	@Override
 	public String toString() {
 		String info = "";
 		info += "--------------------\n";
 		info += "작성자) " + id;
 		info += "\n--------------------";
-		info += "Title : " + title;
-		info += "Content : " + content;
+		info += "\nTitle : " + title;
+		info += "\nContent : " + content;
 		info += "\n--------------------";
 		return info;
 	}
