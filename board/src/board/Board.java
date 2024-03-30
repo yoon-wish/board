@@ -27,7 +27,7 @@ public class Board {
 	private Map<User, ArrayList<Post>> board;
 	private UserManager userManager;
 	private PostManager postManager;
-
+	
 	public Board() {
 		setBoard();
 	}
@@ -77,10 +77,10 @@ public class Board {
 			login();
 		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
 			logout();
-//		else if (sel == WRITE && isLogin(CHECK_LOGIN))
-//			write();
-//		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
-//			runSearch(printSearchSubMenu());
+		else if (sel == WRITE && isLogin(CHECK_LOGIN))
+			write();
+		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
+			runSearch(printSearchSubMenu());
 //		else if (sel == MYPAGE && isLogin(CHECK_LOGIN) && log != 0)
 //			myPage();	
 //		else if (sel == MANAGER && log == 0) 
@@ -113,7 +113,7 @@ public class Board {
 		}
 
 		String pw = inputString("pw");
-		
+
 		User user = userManager.readUser(log);
 		int result = userManager.deleteUser(log, pw);
 		if (result != -1) {
@@ -143,6 +143,33 @@ public class Board {
 		System.out.println("로그아웃 완료");
 	}
 
+	private void write() {
+		User user = userManager.readUser(log);
+		String title = postManager.writeTitle();
+		if (title.equals("")) {
+			return;
+		}
+		String content = postManager.writeContent();
+		
+		Post post = null;
+		if (log != 0) {
+			String code = postManager.writeCode();
+			String id = user.getId();
+			post = postManager.creatPost(id, title, content, code);
+		} else {
+			post = postManager.createNoticePost(title, content);
+		}
+		
+		ArrayList<Post> userPosts = board.get(user);
+		if(userPosts == null) {
+			userPosts = new ArrayList<>();
+		}
+		
+		userPosts.add(post);
+		board.put(user, userPosts);
+
+	}
+
 	private int printSearchSubMenu() {
 		System.out.println("1) 공지사항");
 		System.out.println("2) 전 체 글");
@@ -154,6 +181,10 @@ public class Board {
 			searchNotice();
 		else if (sel == ALLPOST)
 			searchAllPost();
+	}
+	
+	private void searchNotice() {
+		
 	}
 
 	private void temp() {
@@ -177,15 +208,6 @@ public class Board {
 	private String inputString(String message) {
 		System.out.print(message + " : ");
 		return sc.next();
-	}
-
-	private String inputStringLine(String message) {
-		System.out.print(message + " : ");
-		return sc.nextLine();
-	}
-
-	private String inputStringLine() {
-		return sc.nextLine();
 	}
 
 	public void run() {
