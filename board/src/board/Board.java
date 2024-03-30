@@ -181,8 +181,15 @@ public class Board {
 	private void runSearch(int sel) {
 		if (sel == NOTICE)
 			searchNotice();
-//		else if (sel == ALLPOST)
-//			searchAllPost();
+		else if (sel == ALLPOST)
+			searchAllPost();
+	}
+	
+	private void searchAllPost() {
+		ArrayList<Post> posts = postManager.getPosts();
+		int totalPosts = posts.size();
+		
+		postManager.lookPostsTitle(PAGE_SIZE, totalPosts, posts);
 	}
 	
 	private void searchNotice() {
@@ -194,7 +201,7 @@ public class Board {
 		}
 		
 		int totalPosts = board.get(user).size();
-		postManager.lookNoticeTitle(PAGE_SIZE, totalPosts, userPosts);
+		postManager.lookPostsTitle(PAGE_SIZE, totalPosts, userPosts);
 	}
 
 	private boolean isLogin(int check) {
