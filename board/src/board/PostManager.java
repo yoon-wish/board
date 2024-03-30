@@ -46,6 +46,25 @@ public class PostManager {
 		return title;
 	}
 	
+	public String writeContent() {
+		sc.nextLine();	// 버퍼 비우기
+		
+		String content = "";
+		while(true) {
+			String temp = inputStringLine();
+			if(temp.equals(".")) {
+				break;
+			}
+			content += temp + "\n";
+		}
+		
+		if(content != "") {
+			content = content.substring(0, content.length() -1);
+		}
+		
+		return content;
+	}
+	
 	private String inputStringLine() {
 		return sc.nextLine();
 	}
