@@ -1,9 +1,11 @@
 package board;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class PostManager {
 
+	private Scanner sc = new Scanner(System.in);
 	ArrayList<Post> posts = new ArrayList<>();
 	
 	// CRUD
@@ -32,5 +34,20 @@ public class PostManager {
 		posts.remove(index);
 	}
 	
+	public String writeTitle() {
+		sc.nextLine();	// 버퍼 비우기
+		System.out.println("<Title>");
+		String title = inputStringLine();
+		
+		if(title.length() < 2) {
+			System.err.println("제목은 두 글자 이상이어야 합니다.");
+			return "";
+		}
+		return title;
+	}
+	
+	private String inputStringLine() {
+		return sc.nextLine();
+	}
 	
 }
