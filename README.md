@@ -24,8 +24,15 @@
 사용자가 작성하는 모든 글에는 4자리의 비밀번호가 요구되며<br>
 이 비밀번호는 수정, 삭제 시에 필요합니다. (0000은 설정 불가능)
 <br>
+<br>
+<br>
 
+> Class Diagram (UML)
+<img src = "board/image/board.jpg" width = "700"/>
+<br>
 
-
+> Demo
+1.
 <img src="board/image/board_1.gif" width = "700"/>
+2.
 <img src="board/image/board_2.gif" width="700"/>
