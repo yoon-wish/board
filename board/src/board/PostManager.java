@@ -10,14 +10,16 @@ public class PostManager {
 	
 	// CRUD
 	// C
-	public void creatPost(String id, String title, String content, String code) {
+	public Post creatPost(String id, String title, String content, String code) {
 		Post post = new Post(id, title, content, code);
 		posts.add(post);
+		return post;
 	}
 	
-	public void createNoticePost(String title, String content) {
+	public Post createNoticePost(String title, String content) {
 		Post post = new Post(title, content);
 		posts.add(post);
+		return post;
 	}
 	
 	// R
