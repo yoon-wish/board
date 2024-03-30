@@ -72,9 +72,10 @@ public class PostManager {
 	
 	public String writeCode() {
 		String code = inputString("암호(4자리)");
-		if(code.length() != 4) {
+		while(code.length() != 4 || code.equals("0000")) {
 			code = inputString("다시입력(4자리)");
 		}
+
 		return code;
 	}
 	
