@@ -79,15 +79,17 @@ public class PostManager {
 		return index;
 	}
 	// D
-	public void deletePost(int index) {
+	public boolean deletePost(int index) {
 		Post post = posts.get(index);
 		
 		String code = inputCode();
 		if(!post.getCode().equals(code)) {
 			System.err.println("틀렸습니다. 삭제불가.");
-			return;
+			return false;
 		}
 		posts.remove(index);
+		System.out.println("삭제완료");
+		return true;
 	}
 	
 	public int deletePostByManager(int index) {
@@ -147,6 +149,7 @@ public class PostManager {
 			code = inputString("다시입력(4자리)");
 		}
 
+		sc.nextLine();
 		return code;
 	}
 

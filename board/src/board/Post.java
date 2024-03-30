@@ -18,9 +18,10 @@ public class Post {
 	public Post(String title, String content) {
 		this.title = title;
 		this.content = content;
+		this.id = "admin";
 		this.code = "0000";
 	}
-	
+
 	public String getId() {
 		return this.id;
 	}
@@ -32,16 +33,15 @@ public class Post {
 	public String getTitle() {
 		return this.title;
 	}
-	
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getContent() {
 		return this.content;
 	}
-	
+
 	public void setContent(String content) {
 		this.content = content;
 	}
@@ -50,10 +50,8 @@ public class Post {
 	public String toString() {
 		String info = "";
 		info += "--------------------";
-		if (id != null) {
-			info += "\n작성자) " + id;
-			info += "\n--------------------";
-		}
+		info += "\n작성자) " + id;
+		info += "\n--------------------";
 		info += "\nTitle : " + title;
 		info += "\nContent : " + content;
 		info += "\n--------------------";
