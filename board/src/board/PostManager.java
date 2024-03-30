@@ -61,8 +61,6 @@ public class PostManager {
 	}
 	
 	public String writeContent() {
-		sc.nextLine();	// 버퍼 비우기
-		
 		String content = "";
 		System.out.println("<Content>");
 		while(true) {
@@ -87,6 +85,58 @@ public class PostManager {
 		}
 
 		return code;
+	}
+	
+	public void lookNoticeTitle(int pageSize, int totalPosts, ArrayList<Post> posts ) {
+		int currentPage = 1;
+		while(true) {
+			int  totalPages = totalPosts / pageSize;
+			if(totalPages % pageSize !=0)
+				totalPages++;
+			displayPage(currentPage, totalPosts, pageSize, posts);
+			System.out.print("이전(1), 다음(2), 선택(3) : ");
+			int input = sc.nextInt();
+			switch(input) {
+			case 1:
+				if(currentPage > 1)
+					currentPage --;
+				else
+					System.out.println("첫 번째 페이지입니다.");
+				break;
+			case 2:
+				if(currentPage < totalPages)
+					currentPage++;
+				else
+					System.out.println("마지막 페이지입니다.");
+				break;
+			case 3:
+				lookNotice(posts);
+			}
+		}
+	}
+	
+	private void lookNotice(ArrayList<Post> posts) {
+		System.out.print("번호 : ");
+		int pageNumber = sc.nextInt() - 1;
+		if(pageNumber < 0 || pageNumber >= posts.size())
+			return;
+		Post post = posts.get(pageNumber);
+		System.out.println(post);
+	}
+	
+	private void displayPage(int page, int totalPosts, int pageSize, ArrayList<Post> posts) {
+		System.out.println("------ 공지사항 -----");
+		int start = (page - 1) * pageSize;
+		int end = start + pageSize;
+		if(end > totalPosts) {
+			end = totalPosts;
+		}
+		
+		for(int i=start; i<end; i++) {
+			System.out.print(i+1 + ") ");
+			System.out.println(posts.get(i).getTitle());
+		}
+		System.out.println("---------------------");
 	}
 	
 	private String inputString(String message) {
