@@ -10,10 +10,11 @@ public class PostManager {
 	
 	// CRUD
 	// C
-	public void creatPost(String id, String title, String content, int code) {
+	public void creatPost(String id, String title, String content, String code) {
 		Post post = new Post(id, title, content, code);
 		posts.add(post);
 	}
+	
 	
 	// R
 	public Post readPost(int index) {
@@ -63,6 +64,19 @@ public class PostManager {
 		}
 		
 		return content;
+	}
+	
+	public String writeCode() {
+		String code = inputString("암호(4자리)");
+		if(code.length() != 4) {
+			code = inputString("다시입력(4자리)");
+		}
+		return code;
+	}
+	
+	private String inputString(String message) {
+		System.out.print(message + " : ");
+		return sc.next();
 	}
 	
 	private String inputStringLine() {
