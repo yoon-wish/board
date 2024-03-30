@@ -5,9 +5,9 @@ public class Post {
 	private String id;
 	private String title;
 	private String content;
-	private int code;
+	private String code;
 	
-	public Post(String id, String title, String content, int code) {
+	public Post(String id, String title, String content, String code) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
@@ -18,10 +18,10 @@ public class Post {
 	public Post(String title, String content) {
 		this.title = title;
 		this.content = content;
-		this.code = 0000;
+		this.code = "0000";
 	}
 	
-	public int getCode() {
+	public String getCode() {
 		return this.code;
 	}
 	
