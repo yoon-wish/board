@@ -40,26 +40,56 @@ public class PostManager {
 	}
 
 	// U
-	public void updatePostTitle(int index, String newTitle) {
-
+	public void updatePost(int index) {
+		Post post = posts.get(index);
+		
+		String code = inputCode();
+		if(!post.getCode().equals(code)) {
+			System.err.println("틀렸습니다. 수정불가.");
+			return;
+		}
+		
+		sc.nextLine();
+		String title = writeTitle();
+		post.setTitle(title);
+		String content = writeContent();
+		post.setContent(content);
+		
+		System.out.println("수정완료");
 	}
 
-	public void updatePostContent(int index, String newContent) {
-
+	public String inputCode() {
+		System.out.print("암호(4글자) : ");
+		return sc.next();
 	}
-
+	
+	public int findIndex(String id, int pageNumber) {
+		int index = -1;
+		int count = 0;
+		for(int i=0; i<posts.size(); i++) {
+			if(posts.get(i).getId().equals(id)) {
+				count ++;
+			}
+			
+			if(count == pageNumber + 1) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
 	// D
 	public void deletePost(int index) {
 		posts.remove(index);
 	}
 
-	public String writeTitle() {
+	public String writeTitle() {		
 		System.out.println("<Title>");
 		String title = inputStringLine();
-
-		if (title.length() < 2) {
+		
+		while (title.length() < 2) {
 			System.err.println("제목은 두 글자 이상이어야 합니다.");
-			return "";
+			title = inputStringLine();
 		}
 		return title;
 	}
@@ -91,7 +121,7 @@ public class PostManager {
 		return code;
 	}
 
-	public void lookPostsTitle(int pageSize, int totalPosts, ArrayList<Post> posts) {
+	public int lookPostsTitle(int pageSize, int totalPosts, ArrayList<Post> posts) {
 		int currentPage = 1;
 		boolean isRun = true;
 		while (isRun) {
@@ -115,21 +145,24 @@ public class PostManager {
 					System.out.println("마지막 페이지입니다.");
 				break;
 			case 3:
-				lookPosts(posts);
+				return lookPosts(posts);
 			case 4:
 				isRun = false;
 				break;
 			}
 		}
+		
+		return -1;
 	}
 
-	private void lookPosts(ArrayList<Post> posts) {
+	private int lookPosts(ArrayList<Post> posts) {
 		System.out.print("번호 : ");
 		int pageNumber = sc.nextInt() - 1;
 		if (pageNumber < 0 || pageNumber >= posts.size())
-			return;
+			return -1;
 		Post post = posts.get(pageNumber);
 		System.out.println(post);
+		return pageNumber;
 	}
 
 	private void displayPage(int page, int totalPosts, int pageSize, ArrayList<Post> posts) {
