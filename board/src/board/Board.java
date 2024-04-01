@@ -304,7 +304,7 @@ public class Board {
 
 		for (int i = 0; i < board.size(); i++) {
 			User user = userManager.readUser(i);
-			if (i == 1) {
+			if (i == 0) {
 				info += "\n";
 			}
 			if (board.get(user) == null) {

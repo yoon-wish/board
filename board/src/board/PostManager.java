@@ -1,5 +1,7 @@
 package board;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,7 +9,7 @@ public class PostManager {
 
 	private Scanner sc = new Scanner(System.in);
 	ArrayList<Post> posts = new ArrayList<>();
-
+	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	// CRUD
 	// C
 	public Post creatPost(String id, String title, String content, String code) {
@@ -49,7 +51,6 @@ public class PostManager {
 			return;
 		}
 		
-		sc.nextLine();
 		String title = writeTitle();
 		post.setTitle(title);
 		String content = writeContent();
@@ -114,7 +115,13 @@ public class PostManager {
 		return posts.get(pageNumber).getId();
 	}
 
-	public String writeTitle() {		
+	public String writeTitle() {
+		try {
+			if(reader.ready())
+				sc.nextLine();			
+		} catch (Exception e) {
+		}
+		
 		System.out.println("<Title>");
 		String title = inputStringLine();
 		
@@ -148,8 +155,7 @@ public class PostManager {
 		while (code.length() != 4 || code.equals("0000")) {
 			code = inputString("다시입력(4자리)");
 		}
-
-		sc.nextLine();
+		
 		return code;
 	}
 
@@ -158,9 +164,10 @@ public class PostManager {
 		boolean isRun = true;
 		while (isRun) {
 			int totalPages = totalPosts / pageSize;
-			if (totalPages % pageSize != 0)
+			if (totalPosts % pageSize != 0 || totalPosts <= pageSize)
 				totalPages++;
 			displayPage(currentPage, totalPosts, pageSize, posts);
+			System.out.printf("(%d/%d)\n", currentPage, totalPages);
 			System.out.print("이전(1), 다음(2), 선택(3), 종료(4): ");
 			int input = sc.nextInt();
 			switch (input) {
