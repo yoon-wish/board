@@ -28,7 +28,7 @@
 <br>
 
 > Class Diagram (UML)
-<img src = "board/image/board.jpg" width = "700"/>
+<img src = "board/image/board2.jpg" width = "700"/>
 <br>
 
 > Demo
