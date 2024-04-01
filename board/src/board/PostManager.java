@@ -64,6 +64,22 @@ public class PostManager {
 		return sc.next();
 	}
 	
+	public int findIndex(String id, int pageNumber, ArrayList<Post> posts) {
+		int index = -1;
+		int count = 0;
+		for(int i=0; i<posts.size(); i++) {
+			if(posts.get(i).getId().equals(id)) {
+				count ++;
+			}
+			
+			if(count == pageNumber + 1) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
+	
 	public int findIndex(String id, int pageNumber) {
 		int index = -1;
 		int count = 0;

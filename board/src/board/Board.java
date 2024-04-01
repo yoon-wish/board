@@ -138,7 +138,7 @@ public class Board {
 		}
 		int totalPosts = board.get(user).size();
 		int pageNumber = postManager.lookPostsTitle(PAGE_SIZE, totalPosts, userPosts);
-		int index = postManager.findIndex(user.getId(), pageNumber);
+		int index = postManager.findIndex(user.getId(), pageNumber, userPosts);
 		if (index != -1) {
 			int sel = inputNumber("1)수정\n2)삭제\n");
 			if (sel == MODIFY) {
@@ -147,9 +147,9 @@ public class Board {
 				if(postManager.deletePost(index))
 					board.get(user).remove(index);
 			}
+			fileManager.save(saveInfo());
 		}
 
-		fileManager.save(saveInfo());
 
 	}
 
@@ -262,14 +262,14 @@ public class Board {
 
 	private void searchNotice() {
 		User user = userManager.readUser(0);
-		ArrayList<Post> userPosts = board.get(user);
-		if (userPosts == null) {
+		ArrayList<Post> adminPosts = board.get(user);
+		if (adminPosts == null) {
 			System.err.println("공지사항이 없습니다.");
 			return;
 		}
 
 		int totalPosts = board.get(user).size();
-		postManager.lookPostsTitle(PAGE_SIZE, totalPosts, userPosts);
+		postManager.lookPostsTitle(PAGE_SIZE, totalPosts, adminPosts);
 	}
 
 	private boolean isLogin(int check) {
