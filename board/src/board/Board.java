@@ -6,27 +6,27 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Board {
-	private Scanner sc = new Scanner(System.in);
+	private static final Scanner sc = new Scanner(System.in);
 
 	private final int PAGE_SIZE = 3;
 
-	private final int JOIN = 1;
-	private final int LEAVE = 2;
-	private final int LOGIN = 3;
-	private final int LOGOUT = 4;
-	private final int WRITE = 5;
-	private final int SEARCH = 6;
-	private final int MYPAGE = 7;
-	private final int MANAGER = 8;
+	private final String JOIN = "1";
+	private final String LEAVE = "2";
+	private final String LOGIN = "3";
+	private final String LOGOUT = "4";
+	private final String WRITE = "5";
+	private final String SEARCH = "6";
+	private final String MYPAGE = "7";
+	private final String MANAGER = "8";
 
 	private final int CHECK_LOGIN = 1;
 	private final int CHECK_LOGOUT = 2;
 
-	private final int NOTICE = 1;
-	private final int ALLPOST = 2;
+	private final String NOTICE = "1";
+	private final String ALLPOST = "2";
 
-	private final int MODIFY = 1;
-	private final int DELETE = 2;
+	private final String MODIFY = "1";
+	private final String DELETE = "2";
 
 	private int log;
 	private Map<User, ArrayList<Post>> board;
@@ -49,7 +49,7 @@ public class Board {
 		log = -1;
 	}
 
-	private int printMenu() {
+	private String printMenu() {
 		System.out.println("==== Board ====");
 		System.out.println("[1] 회원가입");
 		System.out.println("[2] 회원탈퇴");
@@ -60,51 +60,42 @@ public class Board {
 		System.out.println("[7] 마이페이지");
 		System.out.println("[8] 관리자");
 
-		return inputNumber("Menu");
+		return inputString("Menu");
 	}
 
-	private int inputNumber(String message) {
-		System.out.print(message + " : ");
-		int number = -1;
-		try {
-			String input = sc.next();
-			number = Integer.parseInt(input);
-		} catch (Exception e) {
-			System.err.println("숫자를 입력하세요.");
-		}
-		return number;
-	}
-
-	private void runMenu(int sel) {
-		if (sel == JOIN && isLogin(CHECK_LOGOUT))
+	private void runMenu(String sel) {
+		if (sel.equals(JOIN)&& isLogin(CHECK_LOGOUT))
 			join();
-		else if (sel == LEAVE && isLogin(CHECK_LOGIN))
+		else if (sel.equals(LEAVE) && isLogin(CHECK_LOGIN))
 			leave();
-		else if (sel == LOGIN && isLogin(CHECK_LOGOUT))
+		else if (sel.equals(LOGIN)&& isLogin(CHECK_LOGOUT))
 			login();
-		else if (sel == LOGOUT && isLogin(CHECK_LOGIN))
+		else if (sel.equals(LOGOUT)&& isLogin(CHECK_LOGIN))
 			logout();
-		else if (sel == WRITE && isLogin(CHECK_LOGIN))
+		else if (sel.equals(WRITE)&& isLogin(CHECK_LOGIN))
 			write();
-		else if (sel == SEARCH && isLogin(CHECK_LOGIN))
+		else if (sel.equals(SEARCH)&& isLogin(CHECK_LOGIN))
 			runSearch(printSearchSubMenu());
-		else if (sel == MYPAGE && isLogin(CHECK_LOGIN))
+		else if (sel.equals(MYPAGE)&& isLogin(CHECK_LOGIN))
 			myPage();
-		else if (sel == MANAGER && log == 0)
+		else if (sel.equals(MANAGER)&& log == 0)
 			manager(printManageMenu());
 
 	}
 
-	private int printManageMenu() {
+	private String printManageMenu() {
 		System.out.println("1) 삭제");
-		return inputNumber("menu");
+		return inputString("menu");
 	}
 
-	private void manager(int sel) {
+	private void manager(String sel) {
 		ArrayList<Post> posts = postManager.getPosts();
 		int totalPosts = posts.size();
 
 		int index = postManager.lookPostsTitle(PAGE_SIZE, totalPosts, posts);
+		if(index == -1) {
+			return;
+		}
 		String id = postManager.findUserIdByPageNumber(index);
 
 		int userIndex = findUserIndexById(id);
@@ -140,10 +131,10 @@ public class Board {
 		int pageNumber = postManager.lookPostsTitle(PAGE_SIZE, totalPosts, userPosts);
 		int index = postManager.findIndex(user.getId(), pageNumber, userPosts);
 		if (index != -1) {
-			int sel = inputNumber("1)수정\n2)삭제\n");
-			if (sel == MODIFY) {
+			String sel = inputString("1)수정\n2)삭제\n");
+			if (sel.equals(MODIFY)) {
 				postManager.updatePost(index);
-			} else if (sel == DELETE) {
+			} else if (sel.equals(DELETE)) {
 				if(postManager.deletePost(index))
 					board.get(user).remove(index);
 			}
@@ -240,16 +231,16 @@ public class Board {
 		fileManager.save(saveInfo());
 	}
 
-	private int printSearchSubMenu() {
+	private String printSearchSubMenu() {
 		System.out.println("1) 공지사항");
 		System.out.println("2) 전 체 글");
-		return inputNumber("Menu");
+		return inputString("Menu");
 	}
 
-	private void runSearch(int sel) {
-		if (sel == NOTICE)
+	private void runSearch(String sel) {
+		if (sel.equals(NOTICE))
 			searchNotice();
-		else if (sel == ALLPOST)
+		else if (sel.equals(ALLPOST))
 			searchAllPost();
 	}
 
@@ -284,11 +275,6 @@ public class Board {
 		}
 
 		return true;
-	}
-
-	private String inputString(String message) {
-		System.out.print(message + " : ");
-		return sc.next();
 	}
 
 	private String saveInfo() {
@@ -366,7 +352,15 @@ public class Board {
 		}
 	}
 
-
+	public static String inputString(String message) {
+		System.out.print(message + " : ");
+		return sc.nextLine();
+	}
+	
+	public static String inputString() {
+		return sc.nextLine();
+	}
+	
 	public void run() {
 		init();
 		while (true) {

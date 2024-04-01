@@ -1,15 +1,11 @@
 package board;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class PostManager {
 
-	private Scanner sc = new Scanner(System.in);
-	ArrayList<Post> posts = new ArrayList<>();
-	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	private ArrayList<Post> posts = new ArrayList<>();
+	
 	// CRUD
 	// C
 	public Post creatPost(String id, String title, String content, String code) {
@@ -60,8 +56,7 @@ public class PostManager {
 	}
 
 	public String inputCode() {
-		System.out.print("암호(4글자) : ");
-		return sc.next();
+		return Board.inputString("암호(4글자)");
 	}
 	
 	public int findIndex(String id, int pageNumber, ArrayList<Post> posts) {
@@ -132,18 +127,11 @@ public class PostManager {
 	}
 
 	public String writeTitle() {
-		try {
-			if(reader.ready())
-				sc.nextLine();			
-		} catch (Exception e) {
-		}
-		
-		System.out.println("<Title>");
-		String title = inputStringLine();
+		String title = Board.inputString("<Title>");
 		
 		while (title.length() < 2) {
 			System.err.println("제목은 두 글자 이상이어야 합니다.");
-			title = inputStringLine();
+			title = Board.inputString("<Title>");
 		}
 		return title;
 	}
@@ -152,7 +140,7 @@ public class PostManager {
 		String content = "";
 		System.out.println("<Content>");
 		while (true) {
-			String temp = inputStringLine();
+			String temp = Board.inputString();
 			if (temp.equals(".")) {
 				break;
 			}
@@ -167,9 +155,9 @@ public class PostManager {
 	}
 
 	public String writeCode() {
-		String code = inputString("암호(4자리)");
+		String code = Board.inputString("암호(4자리)");
 		while (code.length() != 4 || code.equals("0000")) {
-			code = inputString("다시입력(4자리)");
+			code = Board.inputString("다시입력(4자리)");
 		}
 		
 		return code;
@@ -184,24 +172,23 @@ public class PostManager {
 				totalPages++;
 			displayPage(currentPage, totalPosts, pageSize, posts);
 			System.out.printf("(%d/%d)\n", currentPage, totalPages);
-			System.out.print("이전(1), 다음(2), 선택(3), 종료(4): ");
-			int input = sc.nextInt();
+			String input = Board.inputString("이전(1), 다음(2), 선택(3), 종료(4): ");
 			switch (input) {
-			case 1:
+			case "1":
 				if (currentPage > 1)
 					currentPage--;
 				else
 					System.out.println("첫 번째 페이지입니다.");
 				break;
-			case 2:
+			case "2":
 				if (currentPage < totalPages)
 					currentPage++;
 				else
 					System.out.println("마지막 페이지입니다.");
 				break;
-			case 3:
+			case "3":
 				return lookPosts(posts);
-			case 4:
+			case "4":
 				isRun = false;
 				break;
 			}
@@ -212,7 +199,7 @@ public class PostManager {
 
 	private int lookPosts(ArrayList<Post> posts) {
 		System.out.print("번호 : ");
-		int pageNumber = sc.nextInt() - 1;
+		int pageNumber = Integer.parseInt(Board.inputString()) - 1;
 		if (pageNumber < 0 || pageNumber >= posts.size())
 			return -1;
 		Post post = posts.get(pageNumber);
@@ -231,15 +218,6 @@ public class PostManager {
 			System.out.print(i + 1 + ") ");
 			System.out.println(posts.get(i).getTitle());
 		}
-	}
-
-	private String inputString(String message) {
-		System.out.print(message + " : ");
-		return sc.next();
-	}
-
-	private String inputStringLine() {
-		return sc.nextLine();
 	}
 
 }
